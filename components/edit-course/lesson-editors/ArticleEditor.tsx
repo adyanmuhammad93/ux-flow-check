@@ -12,9 +12,13 @@ export const ArticleEditor: React.FC<any> = ({ lesson, onCancel, onSave, onDelet
         defaultValues: {
             title: lesson.title,
             isPublished: lesson.isPublished,
-            content: lesson.content
+            content: lesson.content || ''
         }
     });
+
+    React.useEffect(() => {
+        register('content', { required: true });
+    }, [register]);
 
     const content = watch('content');
 
@@ -25,7 +29,10 @@ export const ArticleEditor: React.FC<any> = ({ lesson, onCancel, onSave, onDelet
                 // Simple estimate: HTML string length is roughly text length + tags. 
                 duration: `${Math.ceil((data.content?.length || 0) / 1000)} min read` 
             });
-            await onSave();
+            await onSave({
+                ...data,
+                duration: `${Math.ceil((data.content?.length || 0) / 1000)} min read`
+            });
         } catch (error) {
             console.error(error);
         }
@@ -64,8 +71,8 @@ export const ArticleEditor: React.FC<any> = ({ lesson, onCancel, onSave, onDelet
                             <label className="text-[11px] font-black uppercase text-ueu-navy/40 tracking-wider mb-3 block ml-1">Article Body</label>
                             <div className="rounded-2xl border border-slate-200 focus-within:ring-4 focus-within:ring-ueu-blue/5 focus-within:border-ueu-blue overflow-hidden transition-all">
                                 <RichTextEditor 
-                                    value={content} 
-                                    onChange={(val) => setValue('content', val, { shouldDirty: true, shouldTouch: true })} 
+                                    value={content || ''} 
+                                    onChange={(val) => setValue('content', val, { shouldDirty: true, shouldTouch: true, shouldValidate: true })} 
                                     placeholder="Write your article here..."
                                 />
                             </div>

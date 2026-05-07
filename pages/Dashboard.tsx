@@ -2,6 +2,8 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useStore } from '../store/useStore';
 import { useAuth } from '../hooks/useAuth';
+import { authService } from '../services/authService';
+import { paymentService } from '../services/paymentService';
 import { useNavigate, Navigate, Link } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '../components/ui/Card';
@@ -75,7 +77,7 @@ const StudentProgressReport = React.lazy(() => import('../components/dashboard/i
 const AdminStudentProgress = React.lazy(() => import('../components/dashboard/admin/AdminStudentProgress').then(m => ({ default: m.AdminStudentProgress })));
 
 export const Dashboard: React.FC = () => {
-    const { user, courses, cart } = useStore();
+    const { user, courses, cart, setUser } = useStore();
     const { logout } = useAuth();
     const { formatPrice, currency, setCurrency, allCurrencies } = useCurrency();
     const [activeTab, setActiveTab] = useState(localStorage.getItem('dashboardTab') || 'overview');
@@ -92,6 +94,7 @@ export const Dashboard: React.FC = () => {
     const [statsLoading, setStatsLoading] = useState(true);
     const [userList, setUserList] = useState<any[]>([]);
     const [assignedCourseIds, setAssignedCourseIds] = useState<string[]>([]);
+    const [approvedCourseIds, setApprovedCourseIds] = useState<string[]>([]);
 
     // Persist tab selection
     useEffect(() => {
@@ -144,6 +147,42 @@ export const Dashboard: React.FC = () => {
         }
     }, [user, activeTab]);
 
+    // Keep user enrollment state in sync with backend (e.g. after admin verifies payment)
+    useEffect(() => {
+        const syncCurrentUser = async () => {
+            if (!user) return;
+            try {
+                const freshUser = await authService.getCurrentUser();
+                if (freshUser) setUser(freshUser);
+            } catch (e) {
+                console.error('Failed to sync current user', e);
+            }
+        };
+
+        syncCurrentUser();
+    }, [user?.id, activeTab, setUser]);
+
+    // Fallback source of truth for paid enrollments:
+    // some backends verify payments first and update user.enrolledCourseIds asynchronously.
+    useEffect(() => {
+        const fetchApprovedItems = async () => {
+            if (!user || user.role !== 'student') return;
+            try {
+                const txs = await paymentService.getUserTransactions(user.id);
+                const verifiedCourseIds = txs
+                    .filter((t: any) => t.status === 'verified')
+                    .flatMap((t: any) => (t.items || []))
+                    .filter((i: any) => i.itemType === 'course')
+                    .map((i: any) => i.itemId);
+                setApprovedCourseIds(Array.from(new Set(verifiedCourseIds)));
+            } catch (e) {
+                console.error('Failed to load verified transactions', e);
+                setApprovedCourseIds([]);
+            }
+        };
+        fetchApprovedItems();
+    }, [user?.id, user?.role, activeTab]);
+
     // Tab Switching Fetching
     useEffect(() => {
         if (!user) return;
@@ -183,7 +222,8 @@ export const Dashboard: React.FC = () => {
 
     if (!user) return <Navigate to="/" />;
     
-    const enrolledCourses = courses.filter(c => (user.enrolledCourseIds || []).includes(c.id));
+    const effectiveEnrolledIds = Array.from(new Set([...(user.enrolledCourseIds || []), ...approvedCourseIds]));
+    const enrolledCourses = courses.filter(c => effectiveEnrolledIds.includes(c.id));
     const createdCourses = courses.filter(c => c.instructorId === user.id || assignedCourseIds.includes(c.id));
 
     // Stats Calculation for Instructor Overview

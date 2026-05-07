@@ -44,19 +44,19 @@ export const ResourcesManager: React.FC<ResourcesManagerProps> = ({ lessonId }) 
             setTitle('');
             fetchResources();
         } catch (e) {
-            alert("Upload failed");
+            alert("Unggah gagal");
         } finally {
             setUploading(false);
         }
     };
 
     const handleDelete = async (id: string) => {
-        if (!window.confirm("Delete this resource?")) return;
+        if (!window.confirm("Hapus resource ini?")) return;
         try {
             await resourceService.deleteResource(id);
             setResources(prev => prev.filter(r => r.id !== id));
         } catch (e) {
-            alert("Delete failed");
+            alert("Gagal menghapus");
         }
     };
 
@@ -74,7 +74,7 @@ export const ResourcesManager: React.FC<ResourcesManagerProps> = ({ lessonId }) 
             setTitle('');
             fetchResources();
         } catch (e) {
-            alert('Failed to link asset');
+            alert('Gagal menautkan aset');
         } finally {
             setUploading(false);
         }
@@ -84,7 +84,7 @@ export const ResourcesManager: React.FC<ResourcesManagerProps> = ({ lessonId }) 
         <div className="space-y-4 border rounded-lg p-4 bg-slate-50/50">
             <h4 className="font-semibold text-sm flex items-center gap-2">
                 <Paperclip className="h-4 w-4 text-indigo-500" />
-                Downloadable Resources
+                Resource yang Dapat Diunduh
             </h4>
 
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : (
@@ -106,7 +106,7 @@ export const ResourcesManager: React.FC<ResourcesManagerProps> = ({ lessonId }) 
                             </div>
                         </div>
                     ))}
-                    {resources.length === 0 && <p className="text-xs text-muted-foreground italic">No resources attached.</p>}
+                    {resources.length === 0 && <p className="text-xs text-muted-foreground italic">Belum ada resource terlampir.</p>}
                 </div>
             )}
 
@@ -120,13 +120,13 @@ export const ResourcesManager: React.FC<ResourcesManagerProps> = ({ lessonId }) 
                 </div>
                 <div className="w-1/3">
                     <Input
-                        placeholder="Display Name (Optional)"
+                        placeholder="Nama Tampil (Opsional)"
                         className="h-8 text-xs"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                     />
                 </div>
-                <Button size="sm" variant="outline" onClick={() => setIsAssetModalOpen(true)} className="h-8" title="Choose from Assets Repository">
+                <Button size="sm" variant="outline" onClick={() => setIsAssetModalOpen(true)} className="h-8" title="Pilih dari Repositori Aset">
                     <FolderOpen className="h-3 w-3" />
                 </Button>
                 <Button size="sm" onClick={handleUpload} disabled={!file || uploading} className="h-8">
