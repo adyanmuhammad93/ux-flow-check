@@ -48,7 +48,7 @@ export const ListInput: React.FC<ListInputProps> = ({ label, placeholder, items 
                     className="h-14 px-8 rounded-2xl bg-slate-100 text-ueu-navy font-bold hover:bg-slate-200 transition-all"
                     variant="ghost"
                 >
-                    Add
+                    Tambah
                 </Button>
             </div>
             <ul className="space-y-3">
@@ -69,7 +69,7 @@ export const ListInput: React.FC<ListInputProps> = ({ label, placeholder, items 
                 ))}
                 {items.length === 0 && (
                     <li className="p-8 border-2 border-dashed border-slate-100 rounded-[28px] text-center">
-                        <p className="text-[11px] font-bold text-slate-300 uppercase tracking-widest">No items added yet</p>
+                        <p className="text-[11px] font-bold text-slate-300 uppercase tracking-widest">Belum ada item ditambahkan</p>
                     </li>
                 )}
             </ul>

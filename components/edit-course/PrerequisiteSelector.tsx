@@ -98,9 +98,9 @@ export const PrerequisiteSelector: React.FC<PrerequisiteSelectorProps> = ({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-lg">
                 <DialogHeader>
-                    <DialogTitle>Access Restrictions</DialogTitle>
+                    <DialogTitle>Batasan Akses</DialogTitle>
                     <DialogDescription>
-                        Define conditions that must be met before a student can access this content.
+                        Tentukan kondisi yang harus dipenuhi sebelum mahasiswa dapat mengakses konten ini.
                     </DialogDescription>
                 </DialogHeader>
 
@@ -108,7 +108,7 @@ export const PrerequisiteSelector: React.FC<PrerequisiteSelectorProps> = ({
                     <div className="space-y-4">
                         {rules.length === 0 ? (
                             <div className="text-center py-8 bg-slate-50 rounded-lg border border-dashed text-slate-500 text-sm">
-                                No restrictions set. Content is open.
+                                Belum ada batasan. Konten terbuka untuk diakses.
                             </div>
                         ) : (
                             <div className="space-y-2">
@@ -121,9 +121,9 @@ export const PrerequisiteSelector: React.FC<PrerequisiteSelectorProps> = ({
                                                 {rule.type === 'date' && <Calendar className="h-4 w-4" />}
                                             </div>
                                             <div className="text-sm">
-                                                {rule.type === 'completion' && <span>Must complete <strong>{rule.targetTitle || 'Unknown Item'}</strong></span>}
-                                                {rule.type === 'grade' && <span>Score {rule.minScore}%+ on <strong>{rule.targetTitle}</strong></span>}
-                                                {rule.type === 'date' && <span>Available after <strong>{rule.date ? new Date(rule.date).toLocaleDateString() : 'N/A'}</strong></span>}
+                                                {rule.type === 'completion' && <span>Harus menyelesaikan <strong>{rule.targetTitle || 'Item Tidak Dikenal'}</strong></span>}
+                                                {rule.type === 'grade' && <span>Nilai minimal {rule.minScore}% pada <strong>{rule.targetTitle}</strong></span>}
+                                                {rule.type === 'date' && <span>Tersedia setelah <strong>{rule.date ? new Date(rule.date).toLocaleDateString() : 'N/A'}</strong></span>}
                                             </div>
                                         </div>
                                         <Button size="icon" variant="ghost" className="h-7 w-7 text-red-500 hover:bg-red-50" onClick={() => handleRemoveRule(idx)}>
@@ -134,7 +134,7 @@ export const PrerequisiteSelector: React.FC<PrerequisiteSelectorProps> = ({
                             </div>
                         )}
                         <Button onClick={() => setMode('add')} className="w-full border-dashed" variant="outline">
-                            Add Requirement
+                            Tambah Syarat
                         </Button>
                     </div>
                 ) : (
@@ -156,13 +156,13 @@ export const PrerequisiteSelector: React.FC<PrerequisiteSelectorProps> = ({
 
                         {type === 'completion' && (
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Required Content</label>
+                                <label className="text-sm font-medium">Konten Wajib</label>
                                 <select 
                                     className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm"
                                     value={selectedTarget}
                                     onChange={(e) => setSelectedTarget(e.target.value)}
                                 >
-                                    <option value="">Select a module or lesson...</option>
+                                    <option value="">Pilih modul atau pelajaran...</option>
                                     {eligibleItems.map(item => (
                                         <option key={item.id} value={item.id}>{item.title}</option>
                                     ))}
@@ -173,13 +173,13 @@ export const PrerequisiteSelector: React.FC<PrerequisiteSelectorProps> = ({
                         {type === 'grade' && (
                             <>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">Required Quiz/Assignment</label>
+                                    <label className="text-sm font-medium">Kuis/Tugas Wajib</label>
                                     <select 
                                         className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm"
                                         value={selectedTarget}
                                         onChange={(e) => setSelectedTarget(e.target.value)}
                                     >
-                                        <option value="">Select item...</option>
+                                        <option value="">Pilih item...</option>
                                         {/* Filter specifically for lessons that are quizzes/assignments */}
                                         {eligibleItems.filter(i => i.title.toLowerCase().includes('quiz') || i.title.toLowerCase().includes('assignment')).map(item => (
                                             <option key={item.id} value={item.id}>{item.title}</option>
@@ -187,7 +187,7 @@ export const PrerequisiteSelector: React.FC<PrerequisiteSelectorProps> = ({
                                     </select>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">Minimum Score (%)</label>
+                                    <label className="text-sm font-medium">Nilai Minimum (%)</label>
                                     <Input type="number" min="0" max="100" value={minScore} onChange={(e) => setMinScore(Number(e.target.value))} />
                                 </div>
                             </>
@@ -195,21 +195,21 @@ export const PrerequisiteSelector: React.FC<PrerequisiteSelectorProps> = ({
 
                         {type === 'date' && (
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Available From</label>
+                                <label className="text-sm font-medium">Tersedia Mulai</label>
                                 <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
                             </div>
                         )}
 
                         <div className="flex justify-end gap-2 pt-2">
-                            <Button variant="ghost" onClick={() => setMode('list')}>Cancel</Button>
-                            <Button onClick={handleAddRule}>Add Rule</Button>
+                            <Button variant="ghost" onClick={() => setMode('list')}>Batal</Button>
+                            <Button onClick={handleAddRule}>Tambah Aturan</Button>
                         </div>
                     </div>
                 )}
 
                 {mode === 'list' && (
                     <DialogFooter>
-                        <Button onClick={handleSave}>Save Changes</Button>
+                        <Button onClick={handleSave}>Simpan Perubahan</Button>
                     </DialogFooter>
                 )}
             </DialogContent>

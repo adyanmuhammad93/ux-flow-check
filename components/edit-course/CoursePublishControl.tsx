@@ -31,24 +31,24 @@ export const CoursePublishControl: React.FC<CoursePublishControlProps> = ({ cour
 
     const validateCourse = (): boolean => {
         if (!course.title || !course.description || !course.thumbnailUrl || !course.category || course.price < 0) {
-            setValidationError("Please complete the course landing page details (Title, Description, Thumbnail, Category, Price) before publishing.");
+            setValidationError("Lengkapi detail halaman landing mata kuliah (Judul, Deskripsi, Thumbnail, Kategori, Harga) sebelum publikasi.");
             return false;
         }
         if (!course.syllabus || course.syllabus.length === 0) {
-            setValidationError("Please add at least one module before publishing.");
+            setValidationError("Tambahkan minimal satu modul sebelum publikasi.");
             return false;
         }
         
         // Check for content
         const hasLessons = course.syllabus.some(m => m.lessons.length > 0);
         if (!hasLessons) {
-            setValidationError("Please add at least one lesson to your modules.");
+            setValidationError("Tambahkan minimal satu pelajaran ke modul Anda.");
             return false;
         }
 
         const hasPublishedLessons = course.syllabus.some(m => m.lessons.some(l => l.isPublished));
         if (!hasPublishedLessons) {
-            setValidationError("None of your lessons are published. Please publish at least one lesson content.");
+            setValidationError("Belum ada pelajaran yang dipublikasikan. Publikasikan minimal satu konten pelajaran.");
             return false;
         }
 
@@ -58,7 +58,7 @@ export const CoursePublishControl: React.FC<CoursePublishControlProps> = ({ cour
     const handleAction = async () => {
         if (isPublished || isPending) {
             // Unpublish logic (revert to draft)
-            if (!window.confirm("Are you sure you want to unpublish this course? It will no longer be visible to students.")) return;
+            if (!window.confirm("Yakin ingin menonaktifkan publikasi mata kuliah ini? Mata kuliah tidak akan terlihat oleh mahasiswa.")) return;
             setLoading(true);
             try {
                 await courseService.updateCourse(course.id, { isPublished: false });
@@ -78,7 +78,7 @@ export const CoursePublishControl: React.FC<CoursePublishControlProps> = ({ cour
                 await courseService.updateCourse(course.id, { isPublished: true });
                 onUpdate();
             } catch (e) {
-                alert("Failed to publish course");
+                alert("Gagal mempublikasikan mata kuliah");
             } finally {
                 setLoading(false);
             }
@@ -101,12 +101,12 @@ export const CoursePublishControl: React.FC<CoursePublishControlProps> = ({ cour
                 {isPublished ? (
                     <div className="flex items-center gap-2">
                         <UploadCloud className="h-4 w-4 rotate-180" />
-                        Unpublish Course
+                        Batalkan Publikasi
                     </div>
                 ) : (
                     <div className="flex items-center gap-2">
                         <UploadCloud className="h-4 w-4" />
-                        {isPending ? 'Cancel Review' : 'Publish Course'}
+                        {isPending ? 'Batalkan Review' : 'Publikasikan Mata Kuliah'}
                     </div>
                 )}
             </Button>

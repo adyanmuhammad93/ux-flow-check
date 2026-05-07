@@ -203,7 +203,7 @@ export const CurriculumEditor: React.FC<{
                  onUpdate();
              } catch (error) {
                  console.error(error);
-                 alert("Failed to delete module");
+                 alert("Gagal menghapus modul");
              }
         } else {
              // Lesson Deletion with Optimistic Update
@@ -221,8 +221,8 @@ export const CurriculumEditor: React.FC<{
                 await courseService.deleteLesson(id);
                 onUpdate(); // Silent refresh
             } catch (error: any) {
-                console.error("Failed to delete lesson", error);
-                alert(`Failed to delete lesson: ${error.message}`);
+                console.error("Gagal menghapus pelajaran", error);
+                alert(`Gagal menghapus pelajaran: ${error.message}`);
                 onUpdate(); // Revert
             }
         }
@@ -257,7 +257,7 @@ export const CurriculumEditor: React.FC<{
             onUpdate();
         } catch (e) {
             console.error(e);
-            alert("Failed to save prerequisites");
+            alert("Gagal menyimpan prasyarat");
         }
     };
 
@@ -386,8 +386,8 @@ export const CurriculumEditor: React.FC<{
         <div className="space-y-10 pb-32 relative max-w-6xl mx-auto animate-in fade-in duration-700">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-8 rounded-[32px] border border-slate-100 shadow-sm">
                 <div>
-                    <h2 className="text-3xl font-black text-ueu-navy tracking-tight uppercase">Curriculum Architecture</h2>
-                    <p className="text-slate-500 font-medium mt-1">Design your learning journey. Drag and drop modules and lessons to reorder.</p>
+                    <h2 className="text-3xl font-black text-ueu-navy tracking-tight uppercase">Arsitektur Kurikulum</h2>
+                    <p className="text-slate-500 font-medium mt-1">Rancang alur belajar Anda. Seret dan lepas modul/pelajaran untuk mengurutkan ulang.</p>
                 </div>
             </div>
 
@@ -397,10 +397,10 @@ export const CurriculumEditor: React.FC<{
                         <div className="w-24 h-24 bg-white rounded-full shadow-2xl flex items-center justify-center mx-auto mb-8 border border-white group-hover:scale-110 transition-transform">
                             <Plus className="h-10 w-10 text-violet-500 group-hover:rotate-90 transition-transform duration-300" />
                         </div>
-                        <h3 className="text-2xl font-black text-ueu-navy mb-2 tracking-tight uppercase">Start building your course</h3>
-                        <p className="text-slate-400 mb-10 max-w-sm mx-auto font-medium">Create your first section to begin adding video content, articles, and quizzes.</p>
+                        <h3 className="text-2xl font-black text-ueu-navy mb-2 tracking-tight uppercase">Mulai membangun mata kuliah Anda</h3>
+                        <p className="text-slate-400 mb-10 max-w-sm mx-auto font-medium">Buat bagian pertama untuk mulai menambahkan video, artikel, dan kuis.</p>
                         <Button onClick={() => setIsAddingModule(true)} className="h-16 px-10 rounded-[28px] bg-ueu-navy hover:bg-ueu-blue text-white font-black shadow-2xl shadow-blue-900/20 transition-all active:scale-95 uppercase tracking-widest text-xs">
-                            <Plus className="mr-3 h-5 w-5" /> Create First Section
+                            <Plus className="mr-3 h-5 w-5" /> Buat Bagian Pertama
                         </Button>
                     </div>
                 )}
@@ -451,7 +451,7 @@ export const CurriculumEditor: React.FC<{
                                                                         onChange={(e) => setTempModuleTitle(e.target.value)}
                                                                         className="h-12 max-w-md bg-white shadow-xl rounded-2xl border-violet-200 focus:border-violet-500 font-bold"
                                                                         autoFocus
-                                                                        placeholder="Enter module title"
+                                                                        placeholder="Masukkan judul modul"
                                                                         onKeyDown={(e) => {
                                                                             if (e.key === 'Enter') saveModuleTitle();
                                                                             if (e.key === 'Escape') setEditingModuleId(null);
@@ -477,7 +477,7 @@ export const CurriculumEditor: React.FC<{
                                                                     <div className="flex flex-col min-w-0">
                                                                         <div className="flex items-center gap-2 mb-1">
                                                                            <div className="w-1.5 h-1.5 rounded-full bg-violet-500"></div>
-                                                                           <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Section {mIndex + 1}</span>
+                                                                           <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Bagian {mIndex + 1}</span>
                                                                         </div>
                                                                         <div className="flex items-center gap-3 group/title">
                                                                             <span className="font-black text-ueu-navy truncate text-lg tracking-tight group-hover/header:text-violet-600 transition-colors uppercase">{module.title}</span>
@@ -489,7 +489,7 @@ export const CurriculumEditor: React.FC<{
                                                                             </button>
                                                                             {hasPrerequisites && (
                                                                                 <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 px-3 py-1 rounded-full gap-1.5 font-bold text-[10px] uppercase shadow-sm">
-                                                                                    <Lock className="h-3 w-3" /> Locked
+                                                                                    <Lock className="h-3 w-3" /> Terkunci
                                                                                 </Badge>
                                                                             )}
                                                                         </div>
@@ -525,7 +525,7 @@ export const CurriculumEditor: React.FC<{
                                                                         onClick={(e) => startEditingModule(module, e)}
                                                                         className="w-full text-left px-3 py-2.5 text-sm font-bold text-ueu-navy hover:bg-violet-50 hover:text-violet-600 rounded-xl flex items-center gap-3 transition-colors"
                                                                     >
-                                                                        <Pencil className="h-4 w-4" /> Rename Section
+                                                                        <Pencil className="h-4 w-4" /> Ubah Nama Bagian
                                                                     </button>
                                                                     <button 
                                                                         onClick={(e) => { e.stopPropagation(); setPrereqTarget({ id: module.id, type: 'module', rules: module.prerequisites || [] }); }}
@@ -538,7 +538,7 @@ export const CurriculumEditor: React.FC<{
                                                                         onClick={(e) => { e.stopPropagation(); handleDeleteModule(module.id); }}
                                                                         className="w-full text-left px-3 py-2.5 text-sm font-bold text-red-500 hover:bg-red-50 rounded-xl flex items-center gap-3 transition-colors"
                                                                     >
-                                                                        <Trash2 className="h-4 w-4" /> Delete Section
+                                                                        <Trash2 className="h-4 w-4" /> Hapus Bagian
                                                                     </button>
                                                                 </PopoverContent>
                                                             </Popover>
@@ -855,12 +855,12 @@ export const CurriculumEditor: React.FC<{
                                 })}
                                 {provided.placeholder}
 
-                                {/* Add Module Section */}
+                                {/* Add Module Bagian */}
                                 {isAddingModule ? (
                                     <Card className="border-dashed border-2 border-indigo-200 shadow-none bg-indigo-50/30 animate-in fade-in slide-in-from-bottom-2">
                                         <CardContent className="p-6 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
                                             <div className="flex-1 w-full">
-                                                <label className="text-xs font-semibold text-indigo-900 uppercase tracking-wider mb-1.5 block">New Module Title</label>
+                                                <label className="text-xs font-semibold text-indigo-900 uppercase tracking-wider mb-1.5 block">Judul Modul Baru</label>
                                                 <Input 
                                                     placeholder="e.g., Introduction to Advanced Concepts" 
                                                     value={newModuleTitle} 
@@ -874,8 +874,8 @@ export const CurriculumEditor: React.FC<{
                                                 />
                                             </div>
                                             <div className="flex gap-2 mt-2 sm:mt-6 w-full sm:w-auto">
-                                                <Button onClick={handleAddModule} className="flex-1 sm:flex-none">Save Module</Button>
-                                                <Button variant="ghost" onClick={() => setIsAddingModule(false)} className="flex-1 sm:flex-none">Cancel</Button>
+                                                <Button onClick={handleAddModule} className="flex-1 sm:flex-none">Simpan Modul</Button>
+                                                <Button variant="ghost" onClick={() => setIsAddingModule(false)} className="flex-1 sm:flex-none">Batal</Button>
                                             </div>
                                         </CardContent>
                                     </Card>
@@ -887,7 +887,7 @@ export const CurriculumEditor: React.FC<{
                                                 className="h-16 px-10 rounded-[28px] border-2 border-dashed border-slate-200 text-slate-400 hover:border-violet-500 hover:text-violet-500 hover:bg-violet-50 transition-all font-black uppercase tracking-widest text-xs group"
                                                 onClick={() => setIsAddingModule(true)}
                                             >
-                                                <Plus className="mr-3 h-5 w-5 group-hover:rotate-90 transition-transform duration-300" /> Add New Section
+                                                <Plus className="mr-3 h-5 w-5 group-hover:rotate-90 transition-transform duration-300" /> Tambah Bagian Baru
                                             </Button>
                                         </div>
                                     )
@@ -940,7 +940,7 @@ export const CurriculumEditor: React.FC<{
             <AlertDialog open={!!deleteConfirm} onOpenChange={(open) => !open && setDeleteConfirm(null)}>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogTitle>Apakah Anda benar-benar yakin?</AlertDialogTitle>
                   <AlertDialogDescription>
                     {deleteConfirm?.type === 'lesson' 
                       ? "This action cannot be undone. This will permanently delete this lesson and remove it from the course curriculum."
@@ -948,7 +948,7 @@ export const CurriculumEditor: React.FC<{
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogCancel>Batal</AlertDialogCancel>
                   <AlertDialogAction onClick={executeDelete} className="bg-red-600 hover:bg-red-700">
                     Delete {deleteConfirm?.type === 'module' ? 'Module' : 'Lesson'}
                   </AlertDialogAction>
