@@ -18,11 +18,11 @@ interface AccessSettingsEditorProps {
 }
 
 const ACCESS_TYPES = [
-    { id: 'free', label: 'Open / Free Access', icon: Globe, desc: 'No restrictions. Anyone can enroll instantly.' },
+    { id: 'free', label: 'Akses Terbuka / Gratis', icon: Globe, desc: 'Tanpa batasan. Siapa pun bisa mendaftar langsung.' },
     { id: 'paid', label: 'Require Purchase', icon: DollarSign, desc: 'User must purchase via checkout.' },
-    { id: 'code', label: 'Access Code', icon: Lock, desc: 'User must enter a secret code to join.' },
-    { id: 'prerequisite', label: 'Prerequisite Course', icon: FileCheck, desc: 'User must complete another course first.' },
-    { id: 'date', label: 'Drip-Feed / Date', icon: Calendar, desc: 'Course opens on a specific calendar date.' },
+    { id: 'code', label: 'Kode Akses', icon: Lock, desc: 'Pengguna harus memasukkan kode rahasia untuk bergabung.' },
+    { id: 'prerequisite', label: 'Mata Kuliah Prasyarat', icon: FileCheck, desc: 'Pengguna harus menyelesaikan mata kuliah lain terlebih dahulu.' },
+    { id: 'date', label: 'Berdasarkan Tanggal', icon: Calendar, desc: 'Mata kuliah dibuka pada tanggal tertentu.' },
     { id: 'capacity', label: 'Seat Limit', icon: Users, desc: 'Limit the number of enrolled students.' },
     { id: 'approval', label: 'Manual Approval', icon: ShieldAlert, desc: 'Instructor must approve each enrollment.' },
 ];
@@ -65,18 +65,18 @@ export const AccessSettingsEditor: React.FC<AccessSettingsEditorProps> = ({ cour
 
             await courseService.updateCourse(course.id, updates);
             onUpdate();
-            alert("Access settings updated successfully");
+            alert("Pengaturan akses berhasil diperbarui");
         } catch (error) {
             console.error(error);
-            alert("Failed to save settings");
+            alert("Gagal menyimpan pengaturan");
         }
     };
 
     return (
         <Card className="border-slate-200 shadow-xl rounded-[32px] overflow-hidden border">
             <CardHeader className="p-10 bg-slate-50/50 border-b border-slate-100">
-                <CardTitle className="text-2xl font-black text-ueu-navy tracking-tight">Course Access Rules</CardTitle>
-                <CardDescription className="text-slate-500 font-medium mt-1">Control who can see and enroll in your course.</CardDescription>
+                <CardTitle className="text-2xl font-black text-ueu-navy tracking-tight">Aturan Akses Mata Kuliah</CardTitle>
+                <CardDescription className="text-slate-500 font-medium mt-1">Atur siapa yang dapat melihat dan mendaftar ke mata kuliah Anda.</CardDescription>
             </CardHeader>
             <CardContent className="p-10">
                 <form id="access-form" onSubmit={handleSubmit(onSubmit)} className="space-y-10">
@@ -141,7 +141,7 @@ export const AccessSettingsEditor: React.FC<AccessSettingsEditorProps> = ({ cour
 
                             {selectedType === 'paid' && (
                                 <div className="max-w-xs space-y-3">
-                                    <label className="text-[13px] font-bold text-ueu-navy ml-1 block">Price (USD)</label>
+                                    <label className="text-[13px] font-bold text-ueu-navy ml-1 block">Harga</label>
                                     <div className="relative">
                                         <div className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</div>
                                         <Input 
@@ -156,7 +156,7 @@ export const AccessSettingsEditor: React.FC<AccessSettingsEditorProps> = ({ cour
 
                             {selectedType === 'code' && (
                                 <div className="max-w-sm space-y-3">
-                                    <label className="text-[13px] font-bold text-ueu-navy ml-1 block">Secret Access Code</label>
+                                    <label className="text-[13px] font-bold text-ueu-navy ml-1 block">Kode Akses Rahasia</label>
                                     <Input 
                                         {...register('accessCode', { required: true })} 
                                         placeholder="e.g. VIP2024" 
@@ -168,7 +168,7 @@ export const AccessSettingsEditor: React.FC<AccessSettingsEditorProps> = ({ cour
 
                             {selectedType === 'prerequisite' && (
                                 <div className="max-w-md space-y-3">
-                                    <label className="text-[13px] font-bold text-ueu-navy ml-1 block">Required Course</label>
+                                    <label className="text-[13px] font-bold text-ueu-navy ml-1 block">Mata Kuliah Prasyarat</label>
                                     <Combobox 
                                         options={allCourses.map(c => ({ label: c.title, value: c.id }))}
                                         value={watch('prerequisiteCourseId')}
@@ -223,7 +223,7 @@ export const AccessSettingsEditor: React.FC<AccessSettingsEditorProps> = ({ cour
                     isLoading={isSubmitting}
                     className="h-14 rounded-2xl bg-ueu-navy hover:bg-ueu-blue text-white font-bold px-10 transition-all active:scale-95 shadow-xl shadow-blue-900/10"
                 >
-                    Save Access Rules
+                    Simpan Aturan Akses
                 </Button>
             </CardFooter>
         </Card>

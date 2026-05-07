@@ -25,7 +25,10 @@ export const ArticleEditor: React.FC<any> = ({ lesson, onCancel, onSave, onDelet
                 // Simple estimate: HTML string length is roughly text length + tags. 
                 duration: `${Math.ceil((data.content?.length || 0) / 1000)} min read` 
             });
-            await onSave();
+            await onSave({
+                ...data,
+                duration: `${Math.ceil((data.content?.length || 0) / 1000)} min read`
+            });
         } catch (error) {
             console.error(error);
         }

@@ -49,7 +49,7 @@ export const CertificateSettingsEditor: React.FC<CertificateSettingsEditorProps>
             alert("Certificate settings updated successfully");
         } catch (error) {
             console.error(error);
-            alert("Failed to save settings");
+            alert("Gagal menyimpan pengaturan");
         }
     };
 
@@ -61,8 +61,8 @@ export const CertificateSettingsEditor: React.FC<CertificateSettingsEditorProps>
                         <Award className="h-6 w-6" />
                     </div>
                     <div>
-                        <CardTitle className="text-2xl font-black text-ueu-navy tracking-tight">Certificate Setup</CardTitle>
-                        <CardDescription className="text-slate-500 font-medium mt-1">Configure completion rules and certificate appearance.</CardDescription>
+                        <CardTitle className="text-2xl font-black text-ueu-navy tracking-tight">Pengaturan Sertifikat</CardTitle>
+                        <CardDescription className="text-slate-500 font-medium mt-1">Atur aturan kelulusan dan tampilan sertifikat.</CardDescription>
                     </div>
                 </div>
             </CardHeader>
@@ -87,7 +87,7 @@ export const CertificateSettingsEditor: React.FC<CertificateSettingsEditorProps>
                             <label htmlFor="cert-enabled" className="text-[15px] font-black text-ueu-navy leading-none cursor-pointer flex items-center justify-between">
                                 Enable Certificate of Completion
                                 {enabled && (
-                                    <span className="bg-violet-500 text-white text-[10px] px-3 py-1 rounded-full uppercase tracking-widest font-black animate-pulse">ACTIVE</span>
+                                    <span className="bg-violet-500 text-white text-[10px] px-3 py-1 rounded-full uppercase tracking-widest font-black animate-pulse">AKTIF</span>
                                 )}
                             </label>
                             <p className="text-[13px] text-slate-500 font-medium mt-2 leading-relaxed">
@@ -113,7 +113,7 @@ export const CertificateSettingsEditor: React.FC<CertificateSettingsEditorProps>
                                                 <Percent className="h-5 w-5" />
                                             </div>
                                             <div>
-                                                <label className="text-[15px] font-black text-ueu-navy block tracking-tight">Minimum passing Grade</label>
+                                                <label className="text-[15px] font-black text-ueu-navy block tracking-tight">Nilai Kelulusan Minimum</label>
                                                 <p className="text-xs text-slate-400 font-medium mt-1">Required score to pass quizzes.</p>
                                             </div>
                                         </div>
@@ -142,7 +142,7 @@ export const CertificateSettingsEditor: React.FC<CertificateSettingsEditorProps>
                                                     Enforce Score on Each Quiz
                                                 </label>
                                                 <p className="text-[11px] text-slate-400 font-medium leading-relaxed mt-2 italic">
-                                                    If checked, students must achieve the minimum grade on <strong className="text-slate-600">every individual quiz</strong>. 
+                                                    Jika dicentang, mahasiswa harus mencapai nilai minimum pada <strong className="text-slate-600">setiap kuis</strong>. 
                                                 </p>
                                             </div>
                                         </div>
@@ -177,19 +177,19 @@ export const CertificateSettingsEditor: React.FC<CertificateSettingsEditorProps>
                                     <div className="grid md:grid-cols-2 gap-10">
                                         <div className="space-y-3 group">
                                             <label className="text-[13px] font-black text-ueu-navy ml-1 flex items-center gap-2 uppercase tracking-tight group-hover:text-violet-500 transition-colors">
-                                                <Type className="h-4 w-4" /> Custom Title
+                                                <Type className="h-4 w-4" /> Judul Kustom
                                             </label>
                                             <Input 
                                                 {...register('customTitle')} 
                                                 placeholder="e.g. Certified React Professional" 
                                                 className="h-14 rounded-2xl border-slate-200 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/5 transition-all px-6 font-bold text-ueu-navy shadow-sm bg-white"
                                             />
-                                            <p className="text-[10px] text-slate-400 font-bold ml-2 uppercase italic tracking-widest">Overrides the default "Certificate of Completion".</p>
+                                            <p className="text-[10px] text-slate-400 font-bold ml-2 uppercase italic tracking-widest">Menggantikan judul bawaan "Sertifikat Penyelesaian".</p>
                                         </div>
 
                                         <div className="space-y-3 group">
                                             <label className="text-[13px] font-black text-ueu-navy ml-1 flex items-center gap-2 uppercase tracking-tight group-hover:text-violet-500 transition-colors">
-                                                <Calendar className="h-4 w-4" /> Validity Period (Days)
+                                                <Calendar className="h-4 w-4" /> Masa Berlaku (Hari)
                                             </label>
                                             <div className="relative">
                                                 <Input 
@@ -201,7 +201,7 @@ export const CertificateSettingsEditor: React.FC<CertificateSettingsEditorProps>
                                                 />
                                                 <div className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-200 font-bold pointer-events-none group-hover:text-violet-200 transition-colors">DAYS</div>
                                             </div>
-                                            <p className="text-[10px] text-slate-400 font-bold ml-2 uppercase italic tracking-widest">Enter 0 for lifetime validity.</p>
+                                            <p className="text-[10px] text-slate-400 font-bold ml-2 uppercase italic tracking-widest">Isi 0 untuk masa berlaku seumur hidup.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -217,7 +217,7 @@ export const CertificateSettingsEditor: React.FC<CertificateSettingsEditorProps>
                     isLoading={isSubmitting}
                     className="h-14 rounded-2xl bg-ueu-navy hover:bg-ueu-blue text-white font-black px-10 transition-all active:scale-95 shadow-xl shadow-blue-900/10"
                 >
-                    Save Settings
+                    Simpan Pengaturan
                 </Button>
             </CardFooter>
         </Card>

@@ -66,20 +66,20 @@ export const LandingPageEditor: React.FC<{ course: Course, onUpdate: () => void 
             });
             onUpdate();
         } catch (error) {
-            console.error("Failed to update course", error);
+            console.error("Gagal memperbarui mata kuliah", error);
         }
     };
 
     return (
         <Card className="border-slate-200 shadow-xl rounded-[32px] overflow-hidden border">
             <CardHeader className="p-10 bg-slate-50/50">
-                <CardTitle className="text-2xl font-black text-ueu-navy tracking-tight">Course Landing Page</CardTitle>
-                <CardDescription className="text-slate-500 font-medium">This information will be visible to students on the course details page.</CardDescription>
+                <CardTitle className="text-2xl font-black text-ueu-navy tracking-tight">Halaman Landing Mata Kuliah</CardTitle>
+                <CardDescription className="text-slate-500 font-medium">Informasi ini akan terlihat oleh mahasiswa di halaman detail mata kuliah.</CardDescription>
             </CardHeader>
             <CardContent className="p-10">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
                     <div className="space-y-3">
-                        <label className="text-[13px] font-bold text-ueu-navy ml-1">Course Title <span className="text-red-500">*</span></label>
+                        <label className="text-[13px] font-bold text-ueu-navy ml-1">Judul Mata Kuliah <span className="text-red-500">*</span></label>
                         <Input 
                             {...register('title', { required: true })} 
                             className="h-14 rounded-2xl border-slate-200 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/5 transition-all px-6 font-medium"
@@ -87,7 +87,7 @@ export const LandingPageEditor: React.FC<{ course: Course, onUpdate: () => void 
                     </div>
 
                     <div className="space-y-3">
-                        <label className="text-[13px] font-bold text-ueu-navy ml-1">Course Subtitle</label>
+                        <label className="text-[13px] font-bold text-ueu-navy ml-1">Subjudul Mata Kuliah</label>
                         <Input 
                             {...register('subtitle')} 
                             placeholder="Insert your course subtitle" 
@@ -97,7 +97,7 @@ export const LandingPageEditor: React.FC<{ course: Course, onUpdate: () => void 
                     </div>
 
                     <div className="space-y-3">
-                        <label className="text-[13px] font-bold text-ueu-navy ml-1">Description <span className="text-red-500">*</span></label>
+                        <label className="text-[13px] font-bold text-ueu-navy ml-1">Deskripsi <span className="text-red-500">*</span></label>
                         <Textarea 
                             {...register('description', { required: true })} 
                             rows={5} 
@@ -148,7 +148,7 @@ export const LandingPageEditor: React.FC<{ course: Course, onUpdate: () => void 
                             </div>
                         </div>
                         <div className="space-y-3">
-                            <label className="text-[13px] font-bold text-ueu-navy ml-1">Price ($) <span className="text-red-500">*</span></label>
+                            <label className="text-[13px] font-bold text-ueu-navy ml-1">Harga <span className="text-red-500">*</span></label>
                             <Input 
                                 type="number" 
                                 step="0.01" 
@@ -161,7 +161,7 @@ export const LandingPageEditor: React.FC<{ course: Course, onUpdate: () => void 
                     {/* Thumbnail Section */}
                     <div className="space-y-6 border border-slate-100 rounded-3xl p-8 bg-slate-50/30">
                         <div className="flex items-center justify-between">
-                            <label className="text-[13px] font-bold text-ueu-navy ml-1">Course Thumbnail <span className="text-red-500">*</span></label>
+                            <label className="text-[13px] font-bold text-ueu-navy ml-1">Thumbnail Mata Kuliah <span className="text-red-500">*</span></label>
                             <div className="flex border border-slate-200 rounded-xl p-1 bg-white shadow-sm">
                                 <button
                                     type="button"
@@ -185,7 +185,7 @@ export const LandingPageEditor: React.FC<{ course: Course, onUpdate: () => void 
                                 {thumbnailUrl || (thumbFile && URL.createObjectURL(thumbFile)) ? (
                                     <img
                                         src={thumbMode === 'upload' && thumbFile ? URL.createObjectURL(thumbFile) : thumbnailUrl}
-                                        alt="Thumbnail Preview"
+                                        alt="Pratinjau Thumbnail"
                                         className="w-full h-full object-cover"
                                     />
                                 ) : (
@@ -268,7 +268,7 @@ export const LandingPageEditor: React.FC<{ course: Course, onUpdate: () => void 
                             isLoading={isSubmitting || uploadingThumb}
                             className="h-14 rounded-2xl bg-ueu-navy hover:bg-ueu-blue text-white font-bold px-10 transition-all active:scale-95 shadow-xl shadow-blue-900/10 min-w-[200px]"
                         >
-                            <Save className="mr-2 h-4 w-4" /> Save Course Draft
+                            <Save className="mr-2 h-4 w-4" /> Simpan Draf Mata Kuliah
                         </Button>
                     </div>
                 </form>
