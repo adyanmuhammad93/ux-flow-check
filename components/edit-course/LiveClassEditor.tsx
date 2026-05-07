@@ -102,7 +102,7 @@ export const LiveClassEditor: React.FC<{ course: Course }> = ({ course }) => {
             loadClasses();
         } catch (error) {
             console.error(error);
-            alert("Failed to schedule class");
+            alert("Gagal menjadwalkan kelas");
         }
     };
 
@@ -124,7 +124,7 @@ export const LiveClassEditor: React.FC<{ course: Course }> = ({ course }) => {
             await liveClassService.deleteLiveClass(id);
         } catch (error) {
             console.error(error);
-            alert("Failed to delete class");
+            alert("Gagal menghapus kelas");
             setClasses(previousClasses); // Revert
         }
     };
@@ -139,15 +139,15 @@ export const LiveClassEditor: React.FC<{ course: Course }> = ({ course }) => {
         <div className="space-y-8 animate-in fade-in duration-700">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-8 rounded-[32px] border border-slate-100 shadow-sm">
                 <div>
-                    <h2 className="text-2xl font-black text-ueu-navy tracking-tight">Live Class Schedule</h2>
-                    <p className="text-sm text-slate-500 font-medium mt-1">Schedule Zoom or Google Meet sessions for your students.</p>
+                    <h2 className="text-2xl font-black text-ueu-navy tracking-tight">Jadwal Kelas Live</h2>
+                    <p className="text-sm text-slate-500 font-medium mt-1">Jadwalkan sesi Zoom atau Google Meet untuk mahasiswa Anda.</p>
                 </div>
                 {!isAdding && (
                     <Button 
                         onClick={() => setIsAdding(true)}
                         className="h-12 rounded-2xl bg-ueu-navy hover:bg-ueu-blue text-white font-bold px-6 shadow-xl shadow-blue-900/10 transition-all active:scale-95"
                     >
-                        <Plus className="mr-2 h-4 w-4" /> Schedule Class
+                        <Plus className="mr-2 h-4 w-4" /> Jadwalkan Kelas
                     </Button>
                 )}
             </div>
@@ -164,10 +164,10 @@ export const LiveClassEditor: React.FC<{ course: Course }> = ({ course }) => {
                         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
-                                    <label className="text-[13px] font-bold text-ueu-navy ml-1 block">Session Title</label>
+                                    <label className="text-[13px] font-bold text-ueu-navy ml-1 block">Judul Sesi</label>
                                     <Input 
                                         {...register('title', { required: true })} 
-                                        placeholder="e.g., Weekly Q&A" 
+                                        placeholder="contoh: Sesi Tanya Jawab Mingguan" 
                                         className="h-12 rounded-xl border-slate-200 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/5 transition-all bg-white font-medium"
                                     />
                                 </div>
@@ -180,7 +180,7 @@ export const LiveClassEditor: React.FC<{ course: Course }> = ({ course }) => {
                                         >
                                             <option value="google_meet">Google Meet</option>
                                             <option value="zoom">Zoom</option>
-                                            <option value="other">Other</option>
+                                            <option value="other">Lainnya</option>
                                         </select>
                                         <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
                                             <Clock className="h-4 w-4 text-slate-400" />
@@ -191,7 +191,7 @@ export const LiveClassEditor: React.FC<{ course: Course }> = ({ course }) => {
                             
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
-                                    <label className="text-[13px] font-bold text-ueu-navy ml-1 block">Start Date & Time</label>
+                                    <label className="text-[13px] font-bold text-ueu-navy ml-1 block">Tanggal & Waktu Mulai</label>
                                     <div className="flex gap-3">
                                         <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
                                             <PopoverTrigger asChild>
@@ -204,7 +204,7 @@ export const LiveClassEditor: React.FC<{ course: Course }> = ({ course }) => {
                                                     )}
                                                 >
                                                     <CalendarIcon className="mr-2 h-4 w-4 text-violet-500" />
-                                                    {date ? format(date, "PPP") : <span>Pick a date</span>}
+                                                    {date ? format(date, "PPP") : <span>Pilih tanggal</span>}
                                                 </Button>
                                             </PopoverTrigger>
                                             <PopoverContent className="w-auto p-0 rounded-2xl overflow-hidden shadow-2xl border-slate-100" align="start">
@@ -229,7 +229,7 @@ export const LiveClassEditor: React.FC<{ course: Course }> = ({ course }) => {
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[13px] font-bold text-ueu-navy ml-1 block">Duration (minutes)</label>
+                                    <label className="text-[13px] font-bold text-ueu-navy ml-1 block">Durasi (menit)</label>
                                     <div className="relative">
                                         <Input 
                                             type="number" 
@@ -242,7 +242,7 @@ export const LiveClassEditor: React.FC<{ course: Course }> = ({ course }) => {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-[13px] font-bold text-ueu-navy ml-1 block">Meeting URL</label>
+                                <label className="text-[13px] font-bold text-ueu-navy ml-1 block">URL Meeting</label>
                                 <Input 
                                     {...register('meetingUrl', { required: true })} 
                                     placeholder="https://meet.google.com/..." 
@@ -254,22 +254,22 @@ export const LiveClassEditor: React.FC<{ course: Course }> = ({ course }) => {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-[13px] font-bold text-ueu-navy ml-1 block">Description (Optional)</label>
+                                <label className="text-[13px] font-bold text-ueu-navy ml-1 block">Deskripsi (Opsional)</label>
                                 <Textarea 
                                     {...register('description')} 
-                                    placeholder="What will be covered?" 
+                                    placeholder="Apa yang akan dibahas?" 
                                     className="rounded-xl border-slate-200 focus:border-violet-500 transition-all bg-white min-h-[100px]"
                                 />
                             </div>
 
                             <div className="flex justify-end gap-3 pt-4">
-                                <Button type="button" variant="ghost" onClick={() => setIsAdding(false)} className="h-12 rounded-xl font-bold text-slate-500 hover:bg-white">Cancel</Button>
+                                <Button type="button" variant="ghost" onClick={() => setIsAdding(false)} className="h-12 rounded-xl font-bold text-slate-500 hover:bg-white">Batal</Button>
                                 <Button 
                                     type="submit" 
                                     isLoading={isSubmitting}
                                     className="h-12 rounded-2xl bg-violet-600 hover:bg-violet-700 text-white font-bold px-8 shadow-xl shadow-violet-600/10 transition-all active:scale-95"
                                 >
-                                    Schedule Session
+                                    Simpan Jadwal Sesi
                                 </Button>
                             </div>
                         </form>
@@ -283,14 +283,14 @@ export const LiveClassEditor: React.FC<{ course: Course }> = ({ course }) => {
                         <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-slate-200/50">
                             <CalendarIcon className="h-8 w-8 text-slate-200" />
                         </div>
-                        <h3 className="text-lg font-black text-ueu-navy tracking-tight">No live classes scheduled</h3>
-                        <p className="text-sm text-slate-400 font-medium mt-1">Start connecting with your students live.</p>
+                        <h3 className="text-lg font-black text-ueu-navy tracking-tight">Belum ada kelas live terjadwal</h3>
+                        <p className="text-sm text-slate-400 font-medium mt-1">Mulai terhubung dengan mahasiswa Anda secara live.</p>
                         <Button
                             variant="ghost" 
                             onClick={() => setIsAdding(true)}
                             className="mt-6 font-bold text-violet-500 hover:text-violet-600 hover:bg-violet-50 rounded-xl"
                         >
-                            Schedule your first session
+                            Jadwalkan sesi pertama Anda
                         </Button>
                     </div>
                 )}
@@ -317,9 +317,9 @@ export const LiveClassEditor: React.FC<{ course: Course }> = ({ course }) => {
                                 <div className="flex items-center gap-3">
                                     <h3 className="font-black text-xl text-ueu-navy tracking-tight group-hover:text-violet-600 transition-colors">{cls.title}</h3>
                                     {isPast ? (
-                                        <Badge className="bg-slate-100 text-slate-400 border-none rounded-full px-3 py-1 font-black text-[10px] uppercase tracking-widest">Ended</Badge>
+                                        <Badge className="bg-slate-100 text-slate-400 border-none rounded-full px-3 py-1 font-black text-[10px] uppercase tracking-widest">Selesai</Badge>
                                     ) : (
-                                        <Badge className="bg-green-100 text-green-600 border-none rounded-full px-3 py-1 font-black text-[10px] uppercase tracking-widest animate-pulse">Upcoming</Badge>
+                                        <Badge className="bg-green-100 text-green-600 border-none rounded-full px-3 py-1 font-black text-[10px] uppercase tracking-widest animate-pulse">Akan Datang</Badge>
                                     )}
                                 </div>
                                 <div className="flex flex-wrap gap-x-6 gap-y-2 text-[13px] font-bold">
@@ -370,13 +370,13 @@ export const LiveClassEditor: React.FC<{ course: Course }> = ({ course }) => {
             <AlertDialog open={!!classToDelete} onOpenChange={(open) => !open && setClassToDelete(null)}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Delete Schedule?</AlertDialogTitle>
+                        <AlertDialogTitle>Hapus Jadwal?</AlertDialogTitle>
                         <AlertDialogDescription>
                             This will permanently delete this live class schedule. Students will no longer see it in their dashboard.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel>Batal</AlertDialogCancel>
                         <AlertDialogAction onClick={executeDelete} className="bg-red-600 hover:bg-red-700">
                             Delete
                         </AlertDialogAction>

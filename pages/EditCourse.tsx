@@ -49,13 +49,13 @@ export const EditCourse: React.FC = () => {
     try {
       const data = await courseService.getCourseById(courseId);
       if (!data) {
-          throw new Error("Course not found");
+          throw new Error("Mata kuliah tidak ditemukan");
       }
       setCourse(data);
     } catch (err: any) {
-      console.error("Failed to load course", err);
+      console.error("Gagal memuat mata kuliah", err);
       if (showLoader) {
-          setError(err.message || "Failed to load course details. The ID might be invalid.");
+          setError(err.message || "Gagal memuat detail mata kuliah. ID mungkin tidak valid.");
       }
     } finally {
       if (showLoader) {
@@ -72,10 +72,10 @@ export const EditCourse: React.FC = () => {
 
   const getStatusBadge = () => {
       if (!course) return null;
-      if (course.approvalStatus === 'pending') return <Badge className="bg-amber-100 text-amber-800 border-amber-200">Pending Review</Badge>;
-      if (course.approvalStatus === 'rejected') return <Badge className="bg-red-100 text-red-800 border-red-200">Rejected</Badge>;
-      if (course.isPublished) return <Badge className="bg-green-100 text-green-800 border-green-200">Live</Badge>;
-      return <Badge variant="secondary">Draft</Badge>;
+      if (course.approvalStatus === 'pending') return <Badge className="bg-amber-100 text-amber-800 border-amber-200">Menunggu Tinjauan</Badge>;
+      if (course.approvalStatus === 'rejected') return <Badge className="bg-red-100 text-red-800 border-red-200">Ditolak</Badge>;
+      if (course.isPublished) return <Badge className="bg-green-100 text-green-800 border-green-200">Tayang</Badge>;
+      return <Badge variant="secondary">Draf</Badge>;
   };
 
   if (loading) {
@@ -89,12 +89,12 @@ export const EditCourse: React.FC = () => {
                 <div className="mx-auto w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-4">
                     <AlertTriangle className="h-6 w-6 text-red-600" />
                 </div>
-                <h2 className="text-xl font-bold mb-2">Error Loading Course</h2>
+                <h2 className="text-xl font-bold mb-2">Gagal Memuat Mata Kuliah</h2>
                 <p className="text-muted-foreground mb-6">
-                    {error || "The course you are looking for does not exist or you do not have permission to view it."}
+                    {error || "Mata kuliah yang Anda cari tidak tersedia atau Anda tidak memiliki izin untuk melihatnya."}
                 </p>
                 <Button onClick={() => navigate('/dashboard')}>
-                    Return to Dashboard
+                    Kembali ke Dashboard
                 </Button>
             </div>
         </div>
@@ -113,7 +113,7 @@ export const EditCourse: React.FC = () => {
                     onClick={() => navigate('/dashboard')} 
                     className="text-slate-500 hover:text-ueu-navy transition-colors font-bold"
                 >
-                    <ArrowLeft className="mr-2 h-4 w-4" /> Back
+                    <ArrowLeft className="mr-2 h-4 w-4" /> Kembali
                 </Button>
                 <div className="h-8 w-px bg-slate-100 hidden md:block"></div>
                 <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-4">
@@ -131,7 +131,7 @@ export const EditCourse: React.FC = () => {
                 onClick={() => window.open(`#/course/${course.id}`, '_blank')}
                 className="hidden sm:flex border-2 border-slate-200 rounded-xl font-bold text-ueu-navy hover:bg-slate-50"
                >
-                 <ExternalLink className="mr-2 h-4 w-4" /> Preview
+                 <ExternalLink className="mr-2 h-4 w-4" /> Pratinjau
                </Button>
                
                <CoursePublishControl course={course} onUpdate={handleSilentUpdate} />
@@ -145,8 +145,8 @@ export const EditCourse: React.FC = () => {
         {course.approvalStatus === 'rejected' && (
             <Banner 
                 variant="error" 
-                title="Course Rejected" 
-                description="Your course was rejected by the admin team. Please review the content guidelines and update your course before resubmitting."
+                title="Mata Kuliah Ditolak" 
+                description="Mata kuliah Anda ditolak oleh tim admin. Silakan tinjau panduan konten dan perbarui mata kuliah sebelum mengajukan ulang."
                 className="mb-6"
             />
         )}
@@ -154,8 +154,8 @@ export const EditCourse: React.FC = () => {
         {course.approvalStatus === 'pending' && (
             <Banner 
                 variant="warning" 
-                title="Under Review" 
-                description="Your course is currently waiting for approval from the moderation team. You can still make edits, but they won't be live until approved."
+                title="Sedang Ditinjau" 
+                description="Mata kuliah Anda sedang menunggu persetujuan dari tim moderasi. Anda tetap bisa mengedit, tetapi perubahan belum akan tayang sebelum disetujui."
                 className="mb-6"
             />
         )}
@@ -174,7 +174,7 @@ export const EditCourse: React.FC = () => {
                     <div className={`p-2 rounded-xl ${activeTab === 'landing' ? 'bg-white/10' : 'bg-slate-50'}`}>
                         <LayoutDashboard className="h-4 w-4" />
                     </div>
-                    Course Landing Page
+                    Halaman Landing
                 </button>
                 <button
                     onClick={() => setActiveTab('curriculum')}
@@ -187,7 +187,7 @@ export const EditCourse: React.FC = () => {
                     <div className={`p-2 rounded-xl ${activeTab === 'curriculum' ? 'bg-white/10' : 'bg-slate-50'}`}>
                         <List className="h-4 w-4" />
                     </div>
-                    Curriculum
+                    Kurikulum
                 </button>
                 <button
                     onClick={() => setActiveTab('access')}
@@ -200,7 +200,7 @@ export const EditCourse: React.FC = () => {
                     <div className={`p-2 rounded-xl ${activeTab === 'access' ? 'bg-white/10' : 'bg-slate-50'}`}>
                         <Lock className="h-4 w-4" />
                     </div>
-                    Access & Pricing
+                    Akses & Harga
                 </button>
                 <button
                     onClick={() => setActiveTab('cert')}
@@ -213,7 +213,7 @@ export const EditCourse: React.FC = () => {
                     <div className={`p-2 rounded-xl ${activeTab === 'cert' ? 'bg-white/10' : 'bg-slate-50'}`}>
                         <Award className="h-4 w-4" />
                     </div>
-                    Certification
+                    Sertifikasi
                 </button>
                 <button
                     onClick={() => setActiveTab('live')}
@@ -226,7 +226,7 @@ export const EditCourse: React.FC = () => {
                     <div className={`p-2 rounded-xl ${activeTab === 'live' ? 'bg-white/10' : 'bg-slate-50'}`}>
                         <Video className="h-4 w-4" />
                     </div>
-                    Live Schedule
+                    Jadwal Live
                 </button>
             </div>
 

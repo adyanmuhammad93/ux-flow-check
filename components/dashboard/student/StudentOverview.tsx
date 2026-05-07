@@ -9,6 +9,7 @@ import { useStore } from '../../../store/useStore';
 import { courseService } from '../../../services/courseService';
 import { liveClassService } from '../../../services/liveClassService';
 import { assignmentService } from '../../../services/assignmentService';
+import { paymentService } from '../../../services/paymentService';
 import { Course, LiveClass, CertificateWithCourse } from '../../../types';
 import { Card, CardContent, CardHeader, CardTitle } from '../../ui/Card';
 import { Button } from '../../ui/Button';
@@ -36,7 +37,13 @@ export const StudentOverview: React.FC = () => {
             if (!user) return;
             try {
                 // 1. Get Enrolled Courses with Progress
-                const enrolledIds = user.enrolledCourseIds || [];
+                const txs = await paymentService.getUserTransactions(user.id);
+                const verifiedCourseIds = txs
+                    .filter((t: any) => t.status === 'verified')
+                    .flatMap((t: any) => (t.items || []))
+                    .filter((i: any) => i.itemType === 'course')
+                    .map((i: any) => i.itemId);
+                const enrolledIds = Array.from(new Set([...(user.enrolledCourseIds || []), ...verifiedCourseIds]));
                 const coursePromises = enrolledIds.map(async (id) => {
                     const course = await courseService.getCourseById(id, true);
                     if (!course) return null;
