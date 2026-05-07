@@ -8,10 +8,11 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from './ui/
 import { generateCourseStructure } from '../services/geminiService';
 import { useStore } from '../store/useStore';
 import { Sparkles, Bot, ArrowRight, BookOpen, Layers, Target, Mic2, ChevronDown } from 'lucide-react';
-import { formatCurrency, cn } from '../lib/utils';
+import { cn } from '../lib/utils';
 import { categoryService } from '../services/categoryService';
 import { Category, User } from '../types';
 import { TreeSelect } from './ui/TreeSelect';
+import { useCurrency } from '../hooks/useCurrency';
 
 interface CourseForm {
   title: string;
@@ -44,7 +45,7 @@ export const CreateCourse: React.FC<CreateCourseProps> = ({ onSuccess, onCancel 
                 <div className={cn("p-1.5 rounded-lg", activeTab === 'manual' ? "bg-white/10" : "bg-slate-100")}>
                     <BookOpen className="h-4 w-4" />
                 </div>
-                Manual Creation
+                Buat Manual
             </button>
             <button
                 onClick={() => setActiveTab('ai')}
@@ -57,7 +58,7 @@ export const CreateCourse: React.FC<CreateCourseProps> = ({ onSuccess, onCancel 
                 <div className={cn("p-1.5 rounded-lg", activeTab === 'ai' ? "bg-white/10" : "bg-slate-100")}>
                     <Sparkles className="h-4 w-4" />
                 </div>
-                AI Studio Assistant
+                Asisten AI Studio
             </button>
         </div>
 
@@ -78,6 +79,7 @@ const ManualCreateForm: React.FC<CreateCourseProps> = ({ onSuccess, onCancel }) 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [categories, setCategories] = useState<Category[]>([]);
+  const { currency } = useCurrency();
 
   // Watch category value for the Combobox
   const selectedCategory = watch('category');
@@ -86,7 +88,7 @@ const ManualCreateForm: React.FC<CreateCourseProps> = ({ onSuccess, onCancel }) 
   useEffect(() => {
     categoryService.getCategories().then(data => setCategories(data.filter(c => c.status !== 'inactive'))).catch(console.error);
     // Register the field manually for validation since we use a custom component
-    register('category', { required: 'Category is required' });
+    register('category', { required: 'Kategori wajib dipilih' });
   }, [register]);
 
   const onSubmit = async (data: CourseForm) => {
@@ -104,7 +106,7 @@ const ManualCreateForm: React.FC<CreateCourseProps> = ({ onSuccess, onCancel }) 
       });
       onSuccess();
     } catch (err: any) {
-      setError(err.message || "Failed to create course");
+      setError(err.message || "Gagal membuat mata kuliah");
     } finally {
       setIsSubmitting(false);
     }
@@ -113,29 +115,29 @@ const ManualCreateForm: React.FC<CreateCourseProps> = ({ onSuccess, onCancel }) 
   return (
     <Card className="border-slate-200 shadow-xl rounded-[32px] overflow-hidden border">
         <CardHeader className="pt-10 pb-2 px-10">
-            <CardTitle className="text-2xl font-black text-ueu-navy tracking-tight">Create a New Course</CardTitle>
-            <CardDescription className="text-slate-500 font-medium">Fill in the details below to publish your course to the marketplace.</CardDescription>
+            <CardTitle className="text-2xl font-black text-ueu-navy tracking-tight">Buat Mata Kuliah Baru</CardTitle>
+            <CardDescription className="text-slate-500 font-medium">Lengkapi detail di bawah ini untuk mempublikasikan mata kuliah Anda.</CardDescription>
         </CardHeader>
         <CardContent className="px-10 pb-10">
             {error && <p className="text-red-500 text-sm mb-4 font-bold">{error}</p>}
             
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div className="space-y-2">
-                <label className="text-[13px] font-bold text-ueu-navy ml-1">Course Title</label>
+                <label className="text-[13px] font-bold text-ueu-navy ml-1">Judul Mata Kuliah</label>
                 <Input 
-                    {...register('title', { required: 'Title is required' })} 
-                    placeholder="e.g. Advanced JavaScript Patterns"
+                    {...register('title', { required: 'Judul wajib diisi' })} 
+                    placeholder="Contoh: Strategi JavaScript Tingkat Lanjut"
                     className="h-14 rounded-2xl border-slate-200 focus:border-ueu-blue focus:ring-4 focus:ring-ueu-blue/5 transition-all px-6 font-medium"
                 />
                 {errors.title && <p className="text-xs text-red-500">{errors.title.message}</p>}
                 </div>
 
                 <div className="space-y-2">
-                <label className="text-[13px] font-bold text-ueu-navy ml-1">Description</label>
+                <label className="text-[13px] font-bold text-ueu-navy ml-1">Deskripsi</label>
                 <textarea 
                     className="flex min-h-[140px] w-full rounded-2xl border border-slate-200 bg-background px-6 py-4 text-sm font-medium ring-offset-background placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ueu-blue/5 focus-visible:border-ueu-blue disabled:cursor-not-allowed disabled:opacity-50 transition-all"
-                    {...register('description', { required: 'Description is required' })}
-                    placeholder="What will students learn?"
+                    {...register('description', { required: 'Deskripsi wajib diisi' })}
+                    placeholder="Apa yang akan dipelajari mahasiswa?"
                     rows={4}
                 />
                 {errors.description && <p className="text-xs text-red-500">{errors.description.message}</p>}
@@ -143,22 +145,22 @@ const ManualCreateForm: React.FC<CreateCourseProps> = ({ onSuccess, onCancel }) 
 
                 <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-2">
-                    <label className="text-[13px] font-bold text-ueu-navy ml-1">Category</label>
+                    <label className="text-[13px] font-bold text-ueu-navy ml-1">Kategori</label>
                     <TreeSelect 
                         data={categoryTree}
                         value={selectedCategory}
                         onChange={(val) => setValue('category', val, { shouldValidate: true })}
-                        placeholder="Select category..."
+                        placeholder="Pilih kategori..."
                     />
                     {errors.category && <p className="text-xs text-red-500">{errors.category.message}</p>}
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-[13px] font-bold text-ueu-navy ml-1">Price ($)</label>
+                    <label className="text-[13px] font-bold text-ueu-navy ml-1">Harga ({currency.code})</label>
                     <Input 
                         type="number" 
                         step="0.01"
-                        placeholder="0.00"
+                        placeholder="0"
                         {...register('price', { required: true, min: 0 })} 
                         className="h-14 rounded-2xl border-slate-200 focus:border-ueu-blue focus:ring-4 focus:ring-ueu-blue/5 transition-all px-6 font-medium"
                     />
@@ -173,14 +175,14 @@ const ManualCreateForm: React.FC<CreateCourseProps> = ({ onSuccess, onCancel }) 
                         disabled={isSubmitting}
                         className="h-14 rounded-2xl px-10 border-slate-300 font-bold text-ueu-navy hover:bg-slate-50 transition-all border-2"
                     >
-                        Cancel
+                        Batal
                     </Button>
                     <Button 
                         type="submit" 
                         className="flex-1 h-14 rounded-2xl bg-ueu-navy hover:bg-ueu-blue text-white font-bold text-base transition-all active:scale-95 shadow-xl shadow-blue-900/10" 
                         isLoading={isSubmitting}
                     >
-                        Create Course
+                        Buat Mata Kuliah
                     </Button>
                 </div>
             </form>
@@ -210,6 +212,7 @@ const AICreateForm: React.FC<AICreateFormProps> = ({ user, onSuccess, onCancel, 
     const [generatedData, setGeneratedData] = useState<any>(null);
     const [error, setError] = useState('');
     const { generateCourse } = useCourses();
+    const { formatPrice } = useCurrency();
 
     useEffect(() => {
         categoryService.getCategories().then(data => setCategories(data.filter(c => c.status !== 'inactive'))).catch(console.error);
@@ -234,7 +237,7 @@ const AICreateForm: React.FC<AICreateFormProps> = ({ user, onSuccess, onCancel, 
             setGeneratedData(data);
         } catch (err: any) {
             console.error(err);
-            setError("Failed to generate course. Please try a different topic.");
+            setError("Gagal menghasilkan mata kuliah. Coba gunakan topik lain.");
         } finally {
             setIsGenerating(false);
         }
@@ -249,7 +252,7 @@ const AICreateForm: React.FC<AICreateFormProps> = ({ user, onSuccess, onCancel, 
             navigate(`/instructor/course/${newCourse.id}/edit`);
         } catch (err: any) {
             console.error(err);
-            setError("Failed to save course to database.");
+            setError("Gagal menyimpan mata kuliah ke database.");
         } finally {
             setIsCreating(false);
         }
@@ -262,11 +265,11 @@ const AICreateForm: React.FC<AICreateFormProps> = ({ user, onSuccess, onCancel, 
                     <div className="p-1.5 bg-violet-100 rounded-lg">
                         <Bot className="h-4 w-4" />
                     </div>
-                    <span className="font-bold text-[11px] uppercase tracking-widest">AI Generator</span>
+                    <span className="font-bold text-[11px] uppercase tracking-widest">Generator AI</span>
                 </div>
-                <CardTitle className="text-3xl font-black text-ueu-navy tracking-tight mb-2">Dream it, Build it.</CardTitle>
+                <CardTitle className="text-3xl font-black text-ueu-navy tracking-tight mb-2">Rancang Cepat, Bangun Tepat.</CardTitle>
                 <CardDescription className="text-slate-500 font-medium leading-relaxed">
-                    Describe what you want to teach, and we'll generate a comprehensive course structure including curriculum, drafts, and pricing.
+                    Jelaskan apa yang ingin Anda ajarkan, lalu sistem akan menghasilkan struktur mata kuliah lengkap, termasuk kurikulum, draf materi, dan estimasi harga.
                 </CardDescription>
             </CardHeader>
             <CardContent className="p-10">
@@ -279,12 +282,12 @@ const AICreateForm: React.FC<AICreateFormProps> = ({ user, onSuccess, onCancel, 
                 {!generatedData ? (
                     <form onSubmit={handleGenerate} className="space-y-8">
                         <div className="space-y-3">
-                            <label className="text-[13px] font-bold text-ueu-navy ml-1">What is the main topic?</label>
+                            <label className="text-[13px] font-bold text-ueu-navy ml-1">Apa topik utamanya?</label>
                             <div className="relative group">
                                 <Input 
                                     value={topic}
                                     onChange={(e) => setTopic(e.target.value)}
-                                    placeholder="e.g. A comprehensive guide to Python for Data Science..."
+                                    placeholder="Contoh: Panduan komprehensif Python untuk Data Science"
                                     className="h-16 text-lg rounded-2xl border-slate-200 pl-6 pr-14 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/5 transition-all font-medium placeholder:text-slate-400"
                                     autoFocus
                                 />
@@ -297,30 +300,30 @@ const AICreateForm: React.FC<AICreateFormProps> = ({ user, onSuccess, onCancel, 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                             <div className="space-y-2">
                                 <label className="text-[13px] font-bold text-ueu-navy ml-1 flex items-center gap-2">
-                                    <Target className="h-4 w-4 text-slate-400" /> Target Audience
+                                    <Target className="h-4 w-4 text-slate-400" /> Target Peserta
                                 </label>
                                 <Input 
                                     value={audience}
                                     onChange={(e) => setAudience(e.target.value)}
-                                    placeholder="e.g. Beginners, Marketing Professionals"
+                                    placeholder="Contoh: Pemula, Profesional Marketing"
                                     className="h-14 rounded-2xl border-slate-200 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/5 transition-all px-6 font-medium placeholder:text-slate-300"
                                 />
                             </div>
                             
                             <div className="space-y-2">
                                 <label className="text-[13px] font-bold text-ueu-navy ml-1 flex items-center gap-2">
-                                    <Layers className="h-4 w-4 text-slate-400" /> Category
+                                    <Layers className="h-4 w-4 text-slate-400" /> Kategori
                                 </label>
                                 <TreeSelect 
                                     data={categoryTree}
                                     value={category}
                                     onChange={setCategory}
-                                    placeholder="Select category (Optional)..."
+                                    placeholder="Pilih kategori (opsional)..."
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-[13px] font-bold text-ueu-navy ml-1">Difficulty Level</label>
+                                <label className="text-[13px] font-bold text-ueu-navy ml-1">Tingkat Kesulitan</label>
                                 <div className="relative group">
                                     <select 
                                         value={level}
@@ -338,7 +341,7 @@ const AICreateForm: React.FC<AICreateFormProps> = ({ user, onSuccess, onCancel, 
 
                             <div className="space-y-2">
                                 <label className="text-[13px] font-bold text-ueu-navy ml-1 flex items-center gap-2">
-                                    <Mic2 className="h-4 w-4 text-slate-400" /> Tone of Voice
+                                    <Mic2 className="h-4 w-4 text-slate-400" /> Gaya Penyampaian
                                 </label>
                                 <div className="relative group">
                                     <select 
@@ -364,14 +367,14 @@ const AICreateForm: React.FC<AICreateFormProps> = ({ user, onSuccess, onCancel, 
                                 disabled={isGenerating}
                                 className="h-14 rounded-2xl px-10 border-slate-300 font-bold text-ueu-navy hover:bg-slate-50 transition-all border-2"
                             >
-                                Cancel
+                                Batal
                             </Button>
                             <Button 
                                 type="submit" 
                                 className="h-14 rounded-2xl bg-violet-600 hover:bg-violet-700 text-white font-bold px-10 transition-all active:scale-95 shadow-xl shadow-violet-900/10 min-w-[200px]"
                                 isLoading={isGenerating}
                             >
-                                {isGenerating ? 'Brainstorming...' : 'Generate Course'}
+                                {isGenerating ? 'Menyusun...' : 'Generate Mata Kuliah'}
                             </Button>
                         </div>
                     </form>
@@ -381,13 +384,13 @@ const AICreateForm: React.FC<AICreateFormProps> = ({ user, onSuccess, onCancel, 
                             <div className="flex justify-between items-start">
                                 <div className="flex-1 pr-4">
                                     <div className="flex items-center gap-2 mb-2">
-                                        <div className="px-2 py-0.5 bg-violet-100 text-violet-600 text-[10px] font-black uppercase rounded-md tracking-wider">Preview</div>
+                                        <div className="px-2 py-0.5 bg-violet-100 text-violet-600 text-[10px] font-black uppercase rounded-md tracking-wider">Pratinjau</div>
                                     </div>
                                     <h3 className="text-2xl font-black text-ueu-navy tracking-tight leading-tight">{generatedData.title}</h3>
                                     <p className="text-slate-500 font-medium mt-1">{generatedData.subtitle}</p>
                                 </div>
                                 <div className="text-right">
-                                    <div className="text-2xl font-black text-violet-600">{formatCurrency(generatedData.price)}</div>
+                                    <div className="text-2xl font-black text-violet-600">{formatPrice(generatedData.price)}</div>
                                     <div className="flex flex-col gap-1.5 items-end mt-2">
                                         <div className="text-[10px] text-slate-500 uppercase font-bold bg-slate-100 px-2 py-1 rounded-lg tracking-wider">
                                             {generatedData.level}
@@ -410,7 +413,7 @@ const AICreateForm: React.FC<AICreateFormProps> = ({ user, onSuccess, onCancel, 
                                     <div className="p-1 bg-violet-100 rounded-md">
                                         <Layers className="h-3 w-3 text-violet-600" />
                                     </div>
-                                    Proposed Curriculum ({generatedData.modules?.length || 0} Modules)
+                                    Kurikulum yang Diusulkan ({generatedData.modules?.length || 0} Modul)
                                 </h4>
                                 <div className="border border-slate-200 rounded-[28px] divide-y divide-slate-100 overflow-hidden max-h-[350px] overflow-y-auto bg-white shadow-sm shadow-slate-100/50">
                                     {generatedData.modules?.map((mod: any, i: number) => (
@@ -429,7 +432,7 @@ const AICreateForm: React.FC<AICreateFormProps> = ({ user, onSuccess, onCancel, 
                                                         <span className="ml-auto text-[9px] uppercase border border-slate-100 text-slate-400 px-1.5 py-0.5 rounded-md font-bold tracking-tight bg-white flex items-center gap-1 shrink-0">
                                                             {lesson.type}
                                                             {lesson.content && (
-                                                                <span className="text-green-500" title="Draft Content Included">•</span>
+                                                                <span className="text-green-500" title="Termasuk draf konten">•</span>
                                                             )}
                                                         </span>
                                                     </div>
@@ -448,14 +451,14 @@ const AICreateForm: React.FC<AICreateFormProps> = ({ user, onSuccess, onCancel, 
                                 className="flex-1 h-14 rounded-2xl border-slate-300 font-bold text-ueu-navy hover:bg-slate-50 transition-all border-2"
                                 disabled={isCreating}
                             >
-                                Discard & Try Again
+                                Ulangi dari Awal
                             </Button>
                             <Button 
                                 onClick={handleCreateGenerated} 
                                 className="flex-[2] h-14 rounded-2xl bg-ueu-navy hover:bg-ueu-blue text-white font-bold text-base transition-all active:scale-95 shadow-xl shadow-blue-900/10"
                                 isLoading={isCreating}
                             >
-                                Looks Great! Create Course <ArrowRight className="ml-2 h-4 w-4" />
+                                Sudah Sesuai, Buat Mata Kuliah <ArrowRight className="ml-2 h-4 w-4" />
                             </Button>
                         </div>
                     </div>
