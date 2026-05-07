@@ -17,6 +17,33 @@ export const StudentCourseCard: React.FC<StudentCourseCardProps> = ({ course, us
   const navigate = useNavigate();
   const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [checkingCertificate, setCheckingCertificate] = useState(false);
+
+  const handleOpenCertificate = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (checkingCertificate) return;
+
+    // Guard: visually completed check first
+    if (progress < 100) {
+      alert('Sertifikat akan tersedia setelah progres Anda mencapai 100%.');
+      return;
+    }
+
+    setCheckingCertificate(true);
+    try {
+      const cert = await courseService.getCertificate(userId, course.id);
+      if (!cert) {
+        alert('Sertifikat belum tersedia. Coba buka kembali beberapa saat lagi.');
+        return;
+      }
+      navigate(`/certificate/${course.id}`);
+    } catch (err) {
+      console.error('Failed to open certificate', err);
+      alert('Gagal membuka sertifikat. Silakan coba lagi.');
+    } finally {
+      setCheckingCertificate(false);
+    }
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -110,10 +137,8 @@ export const StudentCourseCard: React.FC<StudentCourseCardProps> = ({ course, us
                         variant="outline" 
                         className="flex-1 rounded-xl border-border h-12 bg-white text-ueu-navy hover:bg-slate-50 transition-all active:scale-95"
                         title="Lihat Sertifikat" 
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(`/certificate/${course.id}`);
-                        }}
+                        disabled={checkingCertificate}
+                        onClick={handleOpenCertificate}
                     >
                         <Award className={cn("h-5 w-5", progress === 100 ? "text-pathway-gold fill-pathway-gold" : "text-slate-300")} />
                     </Button>
